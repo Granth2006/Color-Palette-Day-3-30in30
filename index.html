@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette Studio — Extractor & Generator</title>
+  <meta name="description" content="Extract dominant colors from any image or generate beautiful harmonious color palettes. Copy HEX codes, CSS variables, and export as PNG." />
+
+  <!-- Favicon: color wheel SVG inline -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────── -->
+  <header>
+    <div class="logo-badge">
+      <span>🎨</span>
+      <span>30 in 30 · Day 3</span>
+    </div>
+    <h1>Color Palette Studio</h1>
+    <p>Extract colors from images &amp; generate stunning harmonious palettes instantly.</p>
+  </header>
+
+  <!-- ── Main ───────────────────────────────── -->
+  <main>
+
+    <!-- ═══════════════ SECTION 1: Image Upload & Extract ═══════════════ -->
+    <section class="card" id="extractor-section">
+      <div class="section-header">
+        <div class="section-title">
+          <div class="section-icon icon-purple">🖼️</div>
+          <span>Image Color Extractor</span>
+        </div>
+        <button class="btn btn-primary" id="extract-btn" disabled>
+          ⚡ Extract Colors
+        </button>
+      </div>
+
+      <!-- Image preview (shown after upload) -->
+      <div id="img-preview-wrap">
+        <img id="img-preview" alt="Uploaded image preview" />
+        <button class="btn btn-ghost btn-sm" id="clear-btn" onclick="clearImage()">✕ Clear</button>
+      </div>
+
+      <!-- Drop zone -->
+      <div id="drop-zone" role="button" tabindex="0" aria-label="Upload image — drag and drop or click to browse">
+        <span class="drop-icon">📂</span>
+        <p class="drop-title">Drag &amp; drop an image here</p>
+        <p class="drop-sub">or click to browse your files</p>
+        <button class="btn btn-primary" onclick="event.stopPropagation(); document.getElementById('file-input').click()">
+          Choose Image
+        </button>
+      </div>
+
+      <input type="file" id="file-input" accept="image/*" style="display:none" aria-label="File input" />
+
+      <!-- Extracted palette grid -->
+      <div id="extract-palette" class="palette-grid" style="margin-top:24px;">
+        <p class="palette-empty">Upload an image to extract its colors.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════ SECTION 2: Generate Palette ═══════════════ -->
+    <section class="card" id="generator-section">
+      <div class="section-header">
+        <div class="section-title">
+          <div class="section-icon icon-pink">✨</div>
+          <span>Palette Generator</span>
+        </div>
+        <div class="gen-controls">
+          <select class="scheme-select" id="scheme-select" aria-label="Color harmony scheme">
+            <option value="analogous">Analogous</option>
+            <option value="complementary">Complementary</option>
+            <option value="triadic">Triadic</option>
+            <option value="split">Split-Complementary</option>
+            <option value="tetradic">Tetradic</option>
+            <option value="monochromatic">Monochromatic</option>
+          </select>
+          <button class="btn btn-primary" id="generate-btn">
+            🎲 Generate Palette
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated palette grid -->
+      <div id="generate-palette" class="palette-grid"></div>
+    </section>
+
+    <!-- ═══════════════ SECTION 3: Gradient Preview ═══════════════ -->
+    <section class="card" id="gradient-section">
+      <div class="section-header">
+        <div class="section-title">
+          <div class="section-icon icon-teal">🌈</div>
+          <span>Gradient Preview</span>
+        </div>
+        <span style="font-size:0.8rem;color:var(--text-muted);">Auto-updated from active palette</span>
+      </div>
+      <div id="gradient-bar"></div>
+    </section>
+
+    <!-- ═══════════════ SECTION 4: Export ═══════════════ -->
+    <section class="card" id="export-section">
+      <div class="section-header">
+        <div class="section-title">
+          <div class="section-icon icon-purple">📦</div>
+          <span>Export Palette</span>
+        </div>
+      </div>
+
+      <div class="export-toolbar">
+        <button class="btn btn-ghost" id="copy-hex-btn">
+          📋 Copy HEX List
+        </button>
+        <button class="btn btn-ghost" id="copy-css-btn">
+          🧩 Copy CSS Variables
+        </button>
+        <button class="btn btn-primary" id="download-btn">
+          ⬇️ Download PNG
+        </button>
+      </div>
+
+      <!-- CSS output preview (shown after copy) -->
+      <pre id="css-output"></pre>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────── -->
+  <footer>
+    <p>Built by <strong>Granth Kumar</strong> · <a href="../index.html">30 Web Apps in 30 Days</a></p>
+  </footer>
+
+  <!-- ── Toast notification ─────────────────── -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+  <script>
+    // Clear image helper accessible from HTML
+    function clearImage() {
+      document.getElementById('img-preview-wrap').classList.remove('visible');
+      document.getElementById('file-input').value = '';
+      document.getElementById('extract-btn').disabled = true;
+      document.getElementById('extract-palette').innerHTML =
+        '<p class="palette-empty">Upload an image to extract its colors.</p>';
+      currentImage = null;
+      extractedPalette = [];
+    }
+  </script>
+</body>
+</html>
